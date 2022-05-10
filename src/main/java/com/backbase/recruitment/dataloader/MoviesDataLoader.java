@@ -69,7 +69,7 @@ public class MoviesDataLoader implements CommandLineRunner {
     private AcademyAward createAcademyAwards(String[] fields) {
         String wonYear = getWonYearFromCSV(fields[0]);
         String title = fields[2];
-        Boolean wonAward = getWonAwardFromCSV(fields[4]);
+        Boolean wonAward = getWonAwardFromCSV(fields[fields.length-1]);
         return new AcademyAward(wonYear, title, wonAward);
     }
 
