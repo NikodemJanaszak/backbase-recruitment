@@ -19,7 +19,17 @@ public class OmdbMovie implements Serializable {
 
     private String Genre;
 
-    private Long BoxOffice;
+    private String BoxOffice;
 
+    private String Director;
 
+    @Override
+    public String toString() {
+        return "OmdbMovie{" +
+                "Title='" + Title + '\'' +
+                ", Genre='" + Genre + '\'' +
+                ", BoxOffice='" + BoxOffice + '\'' +
+                ", Director='" + Director + '\'' +
+                '}';
+    }
 }

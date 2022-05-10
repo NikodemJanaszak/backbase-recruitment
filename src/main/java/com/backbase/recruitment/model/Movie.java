@@ -21,13 +21,27 @@ public class Movie {
 
     private String director;
 
-    private Integer releaseYear;
-
     private boolean wonAward;
 
     private String wonYear;
 
+    private String BoxOffice;
+
     private Long votes;
 
     private Long summaryVoting;
+
+    public Movie(String title, String director, boolean wonAward, String wonYear, String boxOffice, Long votes, Long summaryVoting) {
+        this.title = title;
+        this.director = director;
+        this.wonAward = wonAward;
+        this.wonYear = wonYear;
+        BoxOffice = boxOffice;
+        this.votes = votes;
+        this.summaryVoting = summaryVoting;
+    }
+
+    public Movie() {
+
+    }
 }

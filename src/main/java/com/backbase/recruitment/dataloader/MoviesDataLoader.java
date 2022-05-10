@@ -3,9 +3,9 @@ package com.backbase.recruitment.dataloader;
 import com.backbase.recruitment.dataloader.util.AcademyAward;
 import com.backbase.recruitment.dataloader.util.OmdbMovie;
 import com.backbase.recruitment.model.Movie;
-import com.backbase.recruitment.repository.MovieRepository;
+import com.backbase.recruitment.service.MovieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -18,7 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -28,9 +28,9 @@ public class MoviesDataLoader implements CommandLineRunner {
     private static final String OMDB_URL = "http://www.omdbapi.com";
     private static final String API_KEY = "51fb52b";
 
-    public MovieRepository movieRepository;
+    private final MovieService movieService;
 
-    private final List<AcademyAward> academyAwards = new ArrayList<>();
+    private List<AcademyAward> academyAwards = new ArrayList<>();
 
     private final List<Movie> movies = new ArrayList<>();
 
@@ -38,6 +38,7 @@ public class MoviesDataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         loadAwards();
         loadMovies();
+        movieService.saveAll(movies);
     }
 
     private void loadAwards() {
@@ -60,13 +61,9 @@ public class MoviesDataLoader implements CommandLineRunner {
             e.printStackTrace();
         }
 
-//        do testów
-        AtomicInteger i = new AtomicInteger(1);
-        academyAwards.forEach(a -> {
-            System.out.print(i + ": ");
-            System.out.println(a);
-            i.incrementAndGet();
-        });
+        academyAwards = academyAwards.stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     private AcademyAward createAcademyAwards(String[] fields) {
@@ -98,24 +95,28 @@ public class MoviesDataLoader implements CommandLineRunner {
                     urlBuilder.append("+").append(movieTitle[i]);
                 }
             }
+
+            ResponseEntity<String> omdbMovieResponse = restTemplate.getForEntity("http://www.omdbapi.com/?apikey=51fb52b&t=Smilin'+Through", String.class);
+            ObjectMapper mapper = new ObjectMapper();
+            OmdbMovie omdbMovie = new OmdbMovie();
+            try {
+                JsonNode jsonNode = mapper.readTree(omdbMovieResponse.getBody());
+                omdbMovie.setTitle(jsonNode.get("Title").toString().replaceAll("\"", ""));
+                omdbMovie.setGenre(jsonNode.get("Genre").toString().replaceAll("\"", ""));
+                omdbMovie.setBoxOffice(jsonNode.get("BoxOffice").toString().replaceAll("\"", ""));
+                omdbMovie.setDirector(jsonNode.get("Director").toString().replaceAll("\"", ""));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            movies.add(new Movie(award.getTitle(), omdbMovie.getDirector(), award.isWonAward(), award.getWonYear(),
+                    omdbMovie.getBoxOffice(), 0L, 0L));
+        });
+
 // TODO
 
 //            OmdbMovie omdbMovieResponse = restTemplate.getForObject(urlBuilder.toString(), OmdbMovie.class);
-            System.out.println(urlBuilder);
-        });
+//            System.out.println(urlBuilder);
 //        OmdbMovie omdbMovieResponse = restTemplate.getForObject("http://www.omdbapi.com/?apikey=51fb52b&t=Smilin'+Through", OmdbMovie.class);
 //        System.out.println(omdbMovieResponse);
-        ResponseEntity<String> omdbMovieResponse = restTemplate.getForEntity("http://www.omdbapi.com/?apikey=51fb52b&t=Smilin'+Through", String.class);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        OmdbMovie omdbMovie = new OmdbMovie();
-        try {
-            omdbMovie = mapper.readValue(omdbMovieResponse.getBody(), OmdbMovie.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        System.out.println(omdbMovie);
-
     }
 }
