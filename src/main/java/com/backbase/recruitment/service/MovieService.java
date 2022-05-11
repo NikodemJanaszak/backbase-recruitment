@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,10 +20,6 @@ public class MovieService {
 
     public Movie getById(Long id) {
         return movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
-
-    public Movie findByTitle(String title) {
-        return movieRepository.findByTitle(title);
     }
 
     public List<MovieDTO> getAll() {
@@ -47,7 +44,11 @@ public class MovieService {
         return MovieEntityMapper.MovieToDto(save(movie));
     }
 
-    public List<Movie> getTop10ByRatingOrderByBoxOffice() {
-        return movieRepository.findTop10ByOrderBySummaryVotingDesc();
+    public List<MovieDTO> getTop10ByRatingOrderByBoxOffice() {
+        List<Movie> movies = movieRepository.findTop10ByOrderBySummaryVotingDesc();
+        return movies.stream()
+                .sorted(Comparator.comparing(Movie::getBoxOffice).reversed())
+                .map(MovieEntityMapper::MovieToDto)
+                .collect(Collectors.toList());
     }
 }

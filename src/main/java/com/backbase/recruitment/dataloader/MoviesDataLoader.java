@@ -96,7 +96,14 @@ public class MoviesDataLoader implements CommandLineRunner {
             System.out.println("Downloading: " + urlBuilder);
             OmdbMovie omdbMovieResponse = restTemplate.getForObject(urlBuilder.toString(), OmdbMovie.class);
             movies.add(new Movie(award.getTitle(), omdbMovieResponse.getDirector(), award.isWonAward(), award.getWonYear(),
-                    omdbMovieResponse.getBoxOffice(), 0L, 0L));
+                    getValueFromBoxOffice(omdbMovieResponse.getBoxOffice()), 0L, 0L));
         });
+    }
+
+    private Long getValueFromBoxOffice(String boxOffice) {
+        if (boxOffice != null && !boxOffice.equals("N/A")) {
+            return Long.valueOf(boxOffice.replaceAll("\\$", "").replaceAll(",", ""));
+        }
+        return 0L;
     }
 }
