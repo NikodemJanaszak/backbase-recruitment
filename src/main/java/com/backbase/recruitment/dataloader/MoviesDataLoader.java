@@ -2,14 +2,10 @@ package com.backbase.recruitment.dataloader;
 
 import com.backbase.recruitment.dataloader.util.AcademyAward;
 import com.backbase.recruitment.dataloader.util.OmdbMovie;
-import com.backbase.recruitment.model.Movie;
+import com.backbase.recruitment.model.Movie.Movie;
 import com.backbase.recruitment.service.MovieService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,9 +32,11 @@ public class MoviesDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadAwards();
-        loadMovies();
-        movieService.saveAll(movies);
+        if (movieService.getAll().isEmpty()) {
+            loadAwards();
+            loadMovies();
+            movieService.saveAll(movies);
+        }
     }
 
     private void loadAwards() {
@@ -69,7 +67,7 @@ public class MoviesDataLoader implements CommandLineRunner {
     private AcademyAward createAcademyAwards(String[] fields) {
         String wonYear = getWonYearFromCSV(fields[0]);
         String title = fields[2];
-        Boolean wonAward = getWonAwardFromCSV(fields[fields.length-1]);
+        Boolean wonAward = getWonAwardFromCSV(fields[fields.length - 1]);
         return new AcademyAward(wonYear, title, wonAward);
     }
 
@@ -95,28 +93,10 @@ public class MoviesDataLoader implements CommandLineRunner {
                     urlBuilder.append("+").append(movieTitle[i]);
                 }
             }
-
-            ResponseEntity<String> omdbMovieResponse = restTemplate.getForEntity("http://www.omdbapi.com/?apikey=51fb52b&t=Smilin'+Through", String.class);
-            ObjectMapper mapper = new ObjectMapper();
-            OmdbMovie omdbMovie = new OmdbMovie();
-            try {
-                JsonNode jsonNode = mapper.readTree(omdbMovieResponse.getBody());
-                omdbMovie.setTitle(jsonNode.get("Title").toString().replaceAll("\"", ""));
-                omdbMovie.setGenre(jsonNode.get("Genre").toString().replaceAll("\"", ""));
-                omdbMovie.setBoxOffice(jsonNode.get("BoxOffice").toString().replaceAll("\"", ""));
-                omdbMovie.setDirector(jsonNode.get("Director").toString().replaceAll("\"", ""));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            movies.add(new Movie(award.getTitle(), omdbMovie.getDirector(), award.isWonAward(), award.getWonYear(),
-                    omdbMovie.getBoxOffice(), 0L, 0L));
+            System.out.println("Downloading: " + urlBuilder);
+            OmdbMovie omdbMovieResponse = restTemplate.getForObject(urlBuilder.toString(), OmdbMovie.class);
+            movies.add(new Movie(award.getTitle(), omdbMovieResponse.getDirector(), award.isWonAward(), award.getWonYear(),
+                    omdbMovieResponse.getBoxOffice(), 0L, 0L));
         });
-
-// TODO
-
-//            OmdbMovie omdbMovieResponse = restTemplate.getForObject(urlBuilder.toString(), OmdbMovie.class);
-//            System.out.println(urlBuilder);
-//        OmdbMovie omdbMovieResponse = restTemplate.getForObject("http://www.omdbapi.com/?apikey=51fb52b&t=Smilin'+Through", OmdbMovie.class);
-//        System.out.println(omdbMovieResponse);
     }
 }

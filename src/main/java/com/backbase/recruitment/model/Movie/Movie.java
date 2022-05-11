@@ -1,4 +1,4 @@
-package com.backbase.recruitment.model;
+package com.backbase.recruitment.model.Movie;
 
 import lombok.Data;
 
