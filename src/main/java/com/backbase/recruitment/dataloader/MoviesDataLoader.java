@@ -3,6 +3,7 @@ package com.backbase.recruitment.dataloader;
 import com.backbase.recruitment.model.Movie;
 import com.backbase.recruitment.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -19,11 +20,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MoviesDataLoader implements CommandLineRunner {
 
-    private static final String BEST_PICTURE = "Best Picture";
+    @Value("${dataLoader.category.bestPicture}")
+    private String BEST_PICTURE;
 
-    private static final String OMDB_URL = "http://www.omdbapi.com";
+    @Value("${dataLoader.url.omdbUrl}")
+    private String OMDB_URL;
 
-    private static final String API_KEY = "51fb52b";
+    @Value("${dataLoader.url.apiKey}")
+    private String API_KEY;
 
     private final MovieService movieService;
 
