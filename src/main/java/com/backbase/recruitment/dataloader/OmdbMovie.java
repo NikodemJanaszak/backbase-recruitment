@@ -1,6 +1,6 @@
-package com.backbase.recruitment.dataloader.util;
+package com.backbase.recruitment.dataloader;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.backbase.recruitment.model.Movie;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,15 +13,12 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class OmdbMovie implements Serializable {
 
     @JsonProperty
     private String Title;
-
     @JsonProperty
     private String Genre;
-
     @JsonProperty
     private String BoxOffice;
 
@@ -36,5 +33,17 @@ public class OmdbMovie implements Serializable {
                 ", BoxOffice='" + BoxOffice + '\'' +
                 ", Director='" + Director + '\'' +
                 '}';
+    }
+
+    public Movie toMovie(com.backbase.recruitment.dataloader.AcademyAward award) {
+        return new Movie(award.getTitle(), getDirector(), award.isWonAward(), award.getWonYear(),
+                getValueFromBoxOffice(), 0L, 0L);
+    }
+
+    private Long getValueFromBoxOffice() {
+        if (getBoxOffice() != null && !getBoxOffice().equals("N/A")) {
+            return Long.valueOf(getBoxOffice().replaceAll("\\$", "").replaceAll(",", ""));
+        }
+        return 0L;
     }
 }

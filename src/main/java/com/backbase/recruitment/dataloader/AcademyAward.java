@@ -1,4 +1,4 @@
-package com.backbase.recruitment.dataloader.util;
+package com.backbase.recruitment.dataloader;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,7 @@
-package com.backbase.recruitment.model.Movie;
+package com.backbase.recruitment.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 public class Movie {
 
     @Id
@@ -27,21 +29,17 @@ public class Movie {
 
     private Long BoxOffice;
 
-    private Long votes;
+    private Long votesNumber;
 
-    private Long summaryVoting;
+    private Long votesSum;
 
-    public Movie(String title, String director, boolean wonAward, String wonYear, Long boxOffice, Long votes, Long summaryVoting) {
+    public Movie(String title, String director, boolean wonAward, String wonYear, Long boxOffice, Long votesNumber, Long votesSum) {
         this.title = title;
         this.director = director;
         this.wonAward = wonAward;
         this.wonYear = wonYear;
         this.BoxOffice = boxOffice;
-        this.votes = votes;
-        this.summaryVoting = summaryVoting;
-    }
-
-    public Movie() {
-
+        this.votesNumber = votesNumber;
+        this.votesSum = votesSum;
     }
 }

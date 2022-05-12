@@ -1,4 +1,4 @@
-package com.backbase.recruitment.model.Movie;
+package com.backbase.recruitment.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MovieDTO {
+public class MovieDto {
     private Long id;
 
     private String title;

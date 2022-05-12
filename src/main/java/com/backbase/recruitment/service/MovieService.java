@@ -1,8 +1,8 @@
 package com.backbase.recruitment.service;
 
-import com.backbase.recruitment.model.Movie.Movie;
-import com.backbase.recruitment.model.Movie.MovieDTO;
-import com.backbase.recruitment.model.Movie.MovieEntityMapper;
+import com.backbase.recruitment.model.Movie;
+import com.backbase.recruitment.model.MovieDto;
+import com.backbase.recruitment.model.MovieEntityMapper;
 import com.backbase.recruitment.repository.MovieRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ public class MovieService {
         return movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<MovieDTO> getAll() {
+    public List<MovieDto> getAll() {
         return movieRepository.findAll().stream()
-                .map(MovieEntityMapper::MovieToDto)
+                .map(MovieEntityMapper::movieToDto)
                 .collect(Collectors.toList());
     }
 
@@ -36,19 +36,22 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
-    public MovieDTO addRating(Long movieId, Long rating) {
+    public MovieDto addRating(Long movieId, Long rating) throws IncorrectRatingException {
+        if (rating > 10) {
+            throw new IncorrectRatingException("Rating cannot be over 10");
+        }
         Movie movie = getById(movieId);
-        movie.setVotes(movie.getVotes() + 1);
-        movie.setSummaryVoting(movie.getSummaryVoting() + rating);
+        movie.setVotesNumber(movie.getVotesNumber() + 1);
+        movie.setVotesSum(movie.getVotesSum() + rating);
 
-        return MovieEntityMapper.MovieToDto(save(movie));
+        return MovieEntityMapper.movieToDto(save(movie));
     }
 
-    public List<MovieDTO> getTop10ByRatingOrderByBoxOffice() {
-        List<Movie> movies = movieRepository.findTop10ByOrderBySummaryVotingDesc();
+    public List<MovieDto> getTopTenByRatingOrderByBoxOffice() {
+        List<Movie> movies = movieRepository.findTop10ByOrderByVotesSumDesc();
         return movies.stream()
                 .sorted(Comparator.comparing(Movie::getBoxOffice).reversed())
-                .map(MovieEntityMapper::MovieToDto)
+                .map(MovieEntityMapper::movieToDto)
                 .collect(Collectors.toList());
     }
 }
