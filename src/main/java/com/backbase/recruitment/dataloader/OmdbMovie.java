@@ -1,6 +1,6 @@
 package com.backbase.recruitment.dataloader;
 
-import com.backbase.recruitment.model.Movie;
+import com.backbase.recruitment.model.movie.Movie;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +17,10 @@ public class OmdbMovie implements Serializable {
 
     @JsonProperty
     private String Title;
+
     @JsonProperty
     private String Genre;
+
     @JsonProperty
     private String BoxOffice;
 

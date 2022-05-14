@@ -3,17 +3,20 @@ spring:
     console:
       enabled: true
   datasource:
-    url: "jdbc:h2:mem:moviesAwards"
+    url: "jdbc:h2:file:~/resources/database/moviesAwards"
     driverClassName: org.h2.Driver
     username: moviesAwards
     password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create
     defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
 
 dataLoader:
   category.bestPicture: "Best Picture"
   url.omdbUrl: "http://www.omdbapi.com"
   url.apiKey: "51fb52b"
+
+token:
+  secret: "XxpRpfHX"

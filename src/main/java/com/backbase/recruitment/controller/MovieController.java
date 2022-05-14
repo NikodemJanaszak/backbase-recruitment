@@ -1,6 +1,6 @@
 package com.backbase.recruitment.controller;
 
-import com.backbase.recruitment.model.MovieDto;
+import com.backbase.recruitment.model.movie.MovieDto;
 import com.backbase.recruitment.service.IncorrectRatingException;
 import com.backbase.recruitment.service.MovieService;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.backbase.recruitment.service;
 
-import com.backbase.recruitment.model.Movie;
-import com.backbase.recruitment.model.MovieDto;
-import com.backbase.recruitment.model.MovieEntityMapper;
+import com.backbase.recruitment.model.movie.Movie;
+import com.backbase.recruitment.model.movie.MovieDto;
+import com.backbase.recruitment.model.movie.MovieEntityMapper;
 import com.backbase.recruitment.repository.MovieRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

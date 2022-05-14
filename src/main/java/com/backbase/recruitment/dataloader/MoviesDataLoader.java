@@ -1,6 +1,6 @@
 package com.backbase.recruitment.dataloader;
 
-import com.backbase.recruitment.model.Movie;
+import com.backbase.recruitment.model.movie.Movie;
 import com.backbase.recruitment.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
