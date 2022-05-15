@@ -1,7 +1,7 @@
 package com.backbase.recruitment.controller;
 
 import com.backbase.recruitment.model.user.User;
-import com.backbase.recruitment.service.UnauthenticatedUserException;
+import com.backbase.recruitment.service.exception.UnauthenticatedUserException;
 import com.backbase.recruitment.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

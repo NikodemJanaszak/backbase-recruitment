@@ -3,6 +3,7 @@ package com.backbase.recruitment.service;
 import com.backbase.recruitment.model.user.User;
 import com.backbase.recruitment.model.user.UsersConst;
 import com.backbase.recruitment.security.TokenGenerator;
+import com.backbase.recruitment.service.exception.UnauthenticatedUserException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

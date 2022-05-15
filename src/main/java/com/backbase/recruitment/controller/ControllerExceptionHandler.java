@@ -1,7 +1,7 @@
 package com.backbase.recruitment.controller;
 
-import com.backbase.recruitment.service.IncorrectRatingException;
-import com.backbase.recruitment.service.UnauthenticatedUserException;
+import com.backbase.recruitment.service.exception.IncorrectRatingException;
+import com.backbase.recruitment.service.exception.UnauthenticatedUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

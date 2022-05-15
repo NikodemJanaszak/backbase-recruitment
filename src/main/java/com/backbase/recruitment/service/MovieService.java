@@ -4,6 +4,7 @@ import com.backbase.recruitment.model.movie.Movie;
 import com.backbase.recruitment.model.movie.MovieDto;
 import com.backbase.recruitment.model.movie.MovieEntityMapper;
 import com.backbase.recruitment.repository.MovieRepository;
+import com.backbase.recruitment.service.exception.IncorrectRatingException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

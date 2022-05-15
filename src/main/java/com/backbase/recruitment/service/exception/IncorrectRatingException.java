@@ -1,4 +1,4 @@
-package com.backbase.recruitment.service;
+package com.backbase.recruitment.service.exception;
 
 public class IncorrectRatingException extends Exception {
     public IncorrectRatingException(String message) {

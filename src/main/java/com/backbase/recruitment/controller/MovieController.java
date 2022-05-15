@@ -1,7 +1,7 @@
 package com.backbase.recruitment.controller;
 
 import com.backbase.recruitment.model.movie.MovieDto;
-import com.backbase.recruitment.service.IncorrectRatingException;
+import com.backbase.recruitment.service.exception.IncorrectRatingException;
 import com.backbase.recruitment.service.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
