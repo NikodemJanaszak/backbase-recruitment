@@ -2,6 +2,8 @@ package com.backbase.recruitment.constants;
 
 import com.backbase.recruitment.model.movie.Movie;
 
+import java.util.List;
+
 public class MovieConstants {
 
     public static Movie toyStory = new Movie(
@@ -25,4 +27,23 @@ public class MovieConstants {
             11L,
             44L
     );
+
+    public static Movie sherlockHolmes = new Movie(
+            3L,
+            "Sherlock Holmes",
+            "Sherlock Holmes Director",
+            false,
+            "2010",
+            25000L,
+            18L,
+            47L
+    );
+
+    public static List<Movie> getAll() {
+        return List.of(
+                toyStory,
+                inception,
+                sherlockHolmes
+        );
+    }
 }

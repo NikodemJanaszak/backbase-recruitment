@@ -2,52 +2,57 @@ package com.backbase.recruitment.service;
 
 import com.backbase.recruitment.constants.MovieConstants;
 import com.backbase.recruitment.constants.MovieDtoConstants;
-import com.backbase.recruitment.model.movie.Movie;
 import com.backbase.recruitment.model.movie.MovieDto;
 import com.backbase.recruitment.repository.MovieRepository;
 import com.backbase.recruitment.service.exception.IncorrectRatingException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 class MovieServiceTest {
 
-    @Mock
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
 
-    @InjectMocks
-    private MovieService movieService = new MovieService(movieRepository);
+    private final MovieService movieService = new MovieService(movieRepository);
 
     @Test
     public void shouldAddRatingToExistingMovie() throws IncorrectRatingException {
         MovieDto movieDto = MovieDtoConstants.toyStory;
-        Mockito.when(movieRepository.findById(movieDto.getId())).thenReturn(Optional.of(MovieConstants.toyStory));
+        when(movieRepository.findById(movieDto.getId())).thenReturn(Optional.of(MovieConstants.toyStory));
+        when(movieRepository.save(any())).thenReturn(MovieConstants.toyStory);
 
         MovieDto result = movieService.addRating(1L, 10L);
 
-        movieDto.setAvgRating(5.9);
-        movieDto.setVotes(11L);
-
-        assertMovieDto(movieDto, result);
+        assertEquals(11L, result.getVotes());
+        assertEquals(5.9, result.getAvgRating());
     }
 
-    private void assertMovieDto(MovieDto expected, MovieDto result) {
-        assertEquals(expected.getId(), result.getId());
-        assertEquals(expected.getBoxOffice(), result.getBoxOffice());
-        assertEquals(expected.getDirector(), result.getDirector());
-        assertEquals(expected.getTitle(), result.getTitle());
-        assertEquals(expected.getWonYear(), result.getWonYear());
-        assertEquals(expected.getVotes(), result.getVotes());
-        assertEquals(expected.getAvgRating(), result.getAvgRating());
-        assertEquals(expected.isWonAward(), result.isWonAward());
-
+    @Test
+    public void shouldThrowAnExceptionForBadRating() {
+        assertThrows(IncorrectRatingException.class, () -> movieService.addRating(1L, 100L));
     }
+
+    @Test
+    public void shouldSortMoviesByBoxOfficeDescending() {
+        String toyStory = "Toy Story";
+        String sherlockHolmes = "Sherlock Holmes";
+        String inception = "Inception";
+
+        when(movieRepository.findTop10ByOrderByVotesSumDesc()).thenReturn(MovieConstants.getAll());
+
+        List<MovieDto> topTenByBoxOffice = movieService.getTopTenByRatingOrderByBoxOffice();
+
+        assertEquals(toyStory, topTenByBoxOffice.get(0).getTitle());
+        assertEquals(sherlockHolmes, topTenByBoxOffice.get(1).getTitle());
+        assertEquals(inception, topTenByBoxOffice.get(2).getTitle());
+    }
+
 }
