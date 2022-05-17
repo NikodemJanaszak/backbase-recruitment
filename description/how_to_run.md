@@ -1,10 +1,15 @@
 **How to run**
 
-<p>Application is an Intellij IDEA project so to run application you need this IDE.
+<p>The easiest way to start the application is to go to the project directory
+and run the command `./mvnw spring-boot:run`
+
+**There is also an alternative way**
+
+<p>Application is an Intellij IDEA project, so to run application you need this IDE.
 All you have to do is to:</p>
 
 * go to class named RecruitmentApplication.java
-* run main class
+* run main method
 
 ![img.png](images/run_main.png)
 

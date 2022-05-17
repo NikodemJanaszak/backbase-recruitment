@@ -4,4 +4,4 @@
 * develop more complex user service for authentication and authorization
 * above also goes with improved API token generating and verifying
 * good way is to deliver some basic frontend to avoid requesting over Postman app
-* use one of DBMS like PostgreSQL, Oracle Database or MySQL fo example
+* use one of DBMS like PostgreSQL, Oracle Database or MySQL fo example or NoSQL like MongoDB

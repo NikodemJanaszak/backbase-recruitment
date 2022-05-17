@@ -29,7 +29,7 @@ public class Movie {
 
     private String wonYear;
 
-    private Long BoxOffice;
+    private Long boxOffice;
 
     private Long votesNumber;
 
@@ -40,7 +40,7 @@ public class Movie {
         this.director = director;
         this.wonAward = wonAward;
         this.wonYear = wonYear;
-        this.BoxOffice = boxOffice;
+        this.boxOffice = boxOffice;
         this.votesNumber = votesNumber;
         this.votesSum = votesSum;
     }
