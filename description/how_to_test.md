@@ -9,7 +9,7 @@
 
 * Run app
 * To receive a token that allows you to query the API for movies, send a request to this address:`/login/?username=user&password=pass`. A token will be returned in response
-* There are two more endpoints to check if the application works as intended.
+* There are two more endpoints to check if the application works as intended. (Remember to add a Bearer token to your request header)
   * Rate the movie:`/api/movies/rate/{movieId}?rating={[1-10]}` e.g. `/api/movies/rate/5?rating=9`
   * Get 10 top-rated movies ordered by box office value: `/api/movies/top-ten`
 
