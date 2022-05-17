@@ -1,7 +1,7 @@
 **How to run**
 
 <p>The easiest way to start the application is to go to the project directory
-and run the command `./mvnw spring-boot:run`
+and run the command `./mvnw spring-boot:run`</p>
 
 **There is also an alternative way**
 
@@ -11,7 +11,7 @@ All you have to do is to:</p>
 * go to class named RecruitmentApplication.java
 * run main method
 
-![img.png](images/run_main.png)
+![](images/run_main.png)
 
 <p>When you run it for the first time it will take some time. It needs read .csv file with awards data,
 fetch proper movies from OMDb and populate database.</p>
